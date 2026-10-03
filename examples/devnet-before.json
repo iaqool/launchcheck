@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "source": "live",
+  "cluster": "devnet",
+  "fetchedAt": "2026-10-03T13:28:12.012Z",
+  "slot": 507010891,
+  "pool": {
+    "address": "4KSYjPvfeQghULdKBD7r1T2naxCvLtknr3QET3VcuaGS",
+    "configAddress": "9zrY6o9ViBodhKUur8VCNoEtRVYYUXrzRmqs882gDio9",
+    "baseMint": "AGUQzA1GQpwMozVZwCppxBDcYNhgb4PzCihF86NuXDnx",
+    "quoteMint": "So11111111111111111111111111111111111111112",
+    "creator": "Ci3sVjoEwZodi5qPqRBDVBb3QGGNPimr5Zr6p5FHSomk",
+    "quoteSymbol": "SOL",
+    "quoteDecimals": 9,
+    "quoteReserve": "0.016820843",
+    "migrationThreshold": "0.1",
+    "progressPercent": 16.82
+  },
+  "launch": {
+    "stage": "trading",
+    "migrationTarget": "DAMM v2",
+    "startingFeeBps": 100,
+    "endingFeeBps": 100,
+    "dynamicFees": false,
+    "creatorTradingFeePercent": 0,
+    "migrationFeePercent": 0,
+    "feeClaimer": "Ci3sVjoEwZodi5qPqRBDVBb3QGGNPimr5Zr6p5FHSomk",
+    "leftoverReceiver": "Ci3sVjoEwZodi5qPqRBDVBb3QGGNPimr5Zr6p5FHSomk",
+    "allocations": [
+      {
+        "owner": "Partner",
+        "unlockedPercent": 0,
+        "permanentLockedPercent": 100,
+        "vestingPercent": 0,
+        "vestingDescription": null
+      },
+      {
+        "owner": "Creator",
+        "unlockedPercent": 0,
+        "permanentLockedPercent": 0,
+        "vestingPercent": 0,
+        "vestingDescription": null
+      }
+    ]
+  },
+  "migration": {
+    "dammPoolAddress": null,
+    "verified": null,
+    "nextStep": "Continue DBC curve trading until the configured quote threshold is reached."
+  },
+  "checks": [
+    {
+      "id": "dbc-accounts",
+      "title": "DBC accounts",
+      "status": "pass",
+      "detail": "Pool and config were decoded from DBC-owned accounts; pool PDA and mints match."
+    },
+    {
+      "id": "supported-pair",
+      "title": "Supported token pair",
+      "status": "pass",
+      "detail": "SPL Token base mint and wrapped SOL quote mint were read and matched to the config."
+    },
+    {
+      "id": "liquidity-plan",
+      "title": "Configured liquidity allocation",
+      "status": "pass",
+      "detail": "Configured partner and creator shares total 100%. This checks the config, not migrated position ownership or locks."
+    },
+    {
+      "id": "fee-schedule",
+      "title": "DBC base fee schedule",
+      "status": "pass",
+      "detail": "Configured base fee starts at 100 bps and ends at 100 bps. Dynamic fees are disabled."
+    },
+    {
+      "id": "migration-state",
+      "title": "Migration state",
+      "status": "pass",
+      "detail": "DBC progress=0, isMigrated=0, quote reserve 16820843 raw units versus threshold 100000000 raw units."
+    },
+    {
+      "id": "damm-pool",
+      "title": "DAMM v2 pool",
+      "status": "unknown",
+      "detail": "DAMM v2 pool creation has not been confirmed by DBC state."
+    },
+    {
+      "id": "position-locks",
+      "title": "Migrated position locks",
+      "status": "unknown",
+      "detail": "Position NFTs, ownership, and lock or vesting accounts were not read."
+    }
+  ],
+  "limitations": [
+    "Accounts were read in separate RPC calls. The displayed slot is the DBC pool read context, not an atomic multi-account snapshot.",
+    "Configured liquidity allocation does not prove migrated position ownership, permanent locks, or vesting.",
+    "This report is an account inspection, not a security audit or a price forecast."
+  ],
+  "evidence": [
+    {
+      "label": "DBC pool",
+      "address": "4KSYjPvfeQghULdKBD7r1T2naxCvLtknr3QET3VcuaGS",
+      "kind": "account"
+    },
+    {
+      "label": "DBC config",
+      "address": "9zrY6o9ViBodhKUur8VCNoEtRVYYUXrzRmqs882gDio9",
+      "kind": "account"
+    },
+    {
+      "label": "Base mint",
+      "address": "AGUQzA1GQpwMozVZwCppxBDcYNhgb4PzCihF86NuXDnx",
+      "kind": "token"
+    },
+    {
+      "label": "Quote mint",
+      "address": "So11111111111111111111111111111111111111112",
+      "kind": "token"
+    }
+  ]
+}
