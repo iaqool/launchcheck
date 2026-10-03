@@ -19,7 +19,7 @@
 
 ## Оставшаяся уязвимость
 
-Vercel API использует тот же runtime guard до динамической загрузки обработчика. В настройках production и preview задан `NODE_OPTIONS=--no-addons`; без него API отказывает. Команда сборки Vercel очищает этот флаг только для процесса Vite/Rollup, чей parser требует native addon. Это не меняет runtime-переменную Function. Защитные HTTP-заголовки сохранены и для статических страниц на CDN; allowlist `.vercelignore` исключает environment-файлы, ключи и локальные артефакты из загрузки.
+Vercel API использует тот же runtime guard до динамической загрузки обработчика. В настройках production и preview задан `NODE_OPTIONS=--no-addons --experimental-require-module`; без запрета native addons API отказывает. Второй флаг включает [документированную Vercel совместимость CommonJS → ESM](https://vercel.com/docs/functions/runtimes/node-js/advanced-node-configuration#experimental-nodejs-require-of-es-module) для `rpc-websockets → uuid`; он не разрешает нативные addons. Команда сборки Vercel очищает `NODE_OPTIONS` только для процесса Vite/Rollup, чей parser требует native addon. Это не меняет runtime-переменную Function. Защитные HTTP-заголовки сохранены и для статических страниц на CDN; allowlist `.vercelignore` исключает environment-файлы, ключи и локальные артефакты из загрузки.
 
 Для публичного read-only демо `npm start` запускает Node с `--no-addons`. До импорта сервера `scripts/check-runtime.ts` проверяет, что `process.dlopen` отвергает загрузку с `ERR_DLOPEN_DISABLED`, и проверяет JavaScript-конверсию `bigint-buffer`. Без флага процесс завершается до открытия порта. Это блокирует в том числе заранее собранные native addons; одного `npm ci --ignore-scripts` для такой гарантии было бы недостаточно. Docker использует этот же entrypoint, установку без lifecycle scripts и пользователя `node`.
 
@@ -29,7 +29,7 @@ Vercel API использует тот же runtime guard до динамиче�
 
 Проверенный путь: `src/core/inspect.ts` вызывает `unpackMint`; SPL MintLayout декодирует `supply` как u64; `@solana/buffer-layout-utils` передаёт в `toBigIntLE` буфер фиксированной длины 8 байт. Перед декодированием проверяется размер mint-аккаунта. В rehearsal вызовы `getMint` и `getAccount` используют такие же фиксированные u64 layout.
 
-На этих путях не найдено входа, позволяющего пользователю задавать произвольную длину буфера. Это ограниченное исследование достижимости, а не доказательство безопасности всех путей SDK. Перед публичным развёртыванием остаточный риск требует отдельного решения; статус production-ready не присваивается.
+На этих путях не найдено входа, позволяющего пользователю задавать произвольную длину буфера. Это ограниченное исследование достижимости, а не доказательство безопасности всех путей SDK. Публичное демо использует описанный выше запрет нативных addons; статус production-ready не присваивается.
 
 ## Источники и границы проверки
 

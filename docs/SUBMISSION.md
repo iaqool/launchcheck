@@ -19,7 +19,7 @@ The business hypothesis is that launchpad engineering and operations teams may v
 - **Owner / submitter:** [PENDING — owner name]
 - **Team members:** [PENDING — names and roles, or “Solo”]
 - **Project / repository URL:** [https://github.com/iaqool/launchcheck](https://github.com/iaqool/launchcheck)
-- **Live demo URL:** [PENDING — no public deployment yet]
+- **Live demo URL:** [https://launchcheck-one.vercel.app](https://launchcheck-one.vercel.app)
 - **Demo video URL:** [PENDING — record and upload before submission]
 - **Category / track:** [PENDING — select in submission form]
 
@@ -28,6 +28,7 @@ The business hypothesis is that launchpad engineering and operations teams may v
 - Hackathon rules require English submission content. The linked original project documents remain in Russian; this file and [README.en.md](../README.en.md) are the English project summary.
 - Working deadline recorded in the project specification: October 13, 2026 at 11:59 UTC+5 (October 12 at 23:59 Pacific Time). Verify the submission form before submitting.
 - The 2–3 minute demo target is an internal recording plan, not a verified official video-length rule.
-- The local Docker deployment passed. A Vercel Hobby project has been created, but public deployment is still pending; the live demo URL remains pending.
+- The local Docker deployment passed. The app is now published on Vercel Hobby at the live demo URL above. An anonymous public smoke run returned HTTP 200 for health, sample, Devnet migrated inspection and Mainnet migrated inspection; report comparison returned two changes in one check and four for the migrated Devnet lifecycle.
 - The latest verified suite has 58 passing tests and the production build exited 0.
+- The hackathon submission has not been submitted yet. Owner, team, demo video, and category fields above remain pending.
 

@@ -2,6 +2,8 @@
 
 [Русский](README.ru.md) · [Submission draft](docs/SUBMISSION.md) · [Deployment notes](docs/DEPLOYMENT.md)
 
+**Live demo:** [launchcheck-one.vercel.app](https://launchcheck-one.vercel.app) · **Repository:** [iaqool/launchcheck](https://github.com/iaqool/launchcheck)
+
 LaunchCheck is a read-only lifecycle passport for Meteora Dynamic Bonding Curve (DBC) pools targeting DAMM v2. It reads pool, config, mint, reserve, fee, and migration accounts, then presents the observed lifecycle stage, evidence-based checks, and a JSON snapshot that can be compared with a later read. It is a developer inspection tool, not a launchpad, security certification, token audit, or price predictor.
 
 ## Run locally
@@ -33,13 +35,13 @@ npm test
 npm run smoke -- <DBC-pool-address> [mainnet-beta|devnet]
 ```
 
-The verified suite has 58 passing tests; `npm run build` completed successfully. Two existing mainnet pools were inspected read-only. A seven-transaction devnet lifecycle was finalized across three runs, covering DBC buy/sell, threshold, migration, and DAMM v2 buy. See [verification details](VERIFICATION.md), [English devnet transaction evidence](docs/DEVNET-PROOF.en.md), and the [original devnet proof](DEVNET-PROOF.md).
+The verified suite has 58 passing tests; `npm run build` completed successfully. Two existing mainnet pools were inspected read-only. A seven-transaction devnet lifecycle was finalized across three runs, covering DBC buy/sell, threshold, migration, and DAMM v2 buy. An anonymous smoke check of the published app returned HTTP 200 for health, sample, and live inspection routes. Report comparison returned two changes in one check and four when comparing the migrated Devnet pool. See [verification details](VERIFICATION.md), [English devnet transaction evidence](docs/DEVNET-PROOF.en.md), and the [original devnet proof](DEVNET-PROOF.md).
 
 ## Security status
 
 Mainnet inspection does not connect a wallet, sign, or send transactions. The separate rehearsal tooling can submit test transactions to Devnet. The latest recorded `npm audit` result is **5 high, 0 moderate, 0 critical**, all associated with the unresolved `bigint-buffer` advisory. Reachability checks found fixed-length buffers on the reviewed SPL paths, but this does not establish SDK-wide safety. The project is not production-ready; see [SECURITY.md](SECURITY.md) for scope and details.
 
-For container and hosting setup, including bind address, forwarded `Host` header, TLS, rate limits, and health checks, see [deployment notes](docs/DEPLOYMENT.md). Public deployment is still pending.
+For container and hosting setup, including bind address, forwarded `Host` header, TLS, rate limits, and health checks, see [deployment notes](docs/DEPLOYMENT.md). The site is published on Vercel Hobby and is not described as production-ready.
 
 ## Original project documents
 

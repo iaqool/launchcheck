@@ -1,10 +1,36 @@
 # Проверка LaunchCheck — 2026-10-03
 
-Первая локальная версия реализована и проверена. Публичного деплоя и подачи на конкурс не было. Mainnet использовался только для чтения.
+Проект опубликован в [iaqool/launchcheck](https://github.com/iaqool/launchcheck), демо — [launchcheck-one.vercel.app](https://launchcheck-one.vercel.app). Подачи на конкурс не было. Mainnet использовался только для чтения.
 
 **Devnet-цикл завершён:** семь транзакций от создания пула до покупки на DAMM v2 проверены как finalized, без ошибок. Последний прогон — `passed`; цикл выполнен за три запуска с восстановлением после сбоев. [Ссылки и границы доказательства](DEVNET-PROOF.md). Итоговый JSON — `artifacts/devnet-cycle-finalized.json`.
 
 ## Выполненные команды
+
+### Публичный GitHub и Vercel
+
+После разрешения владельца создан отдельный Git-репозиторий только внутри `launchcheck`, опубликованы 60 проверенных файлов. Соседние проекты, реальные `.env*`, ключи, `.vercel/` и `artifacts/` в коммит не вошли. В Git сохранён только публичный `.env.example`.
+
+Итоговый `npm test && npm run build` завершился с кодом 0: **58 passed, 0 failed**, Vite собрал 30 modules. Отдельно API скомпилирован в ESM и запущен обычным Node без `tsx`: `200 ok`. Серверные относительные импорты используют `.js`, чтобы работать после транспиляции Vercel.
+
+Реальный Vercel deployment `dpl_4fFUgeC7mBanMCkhLvb44ka8AgNm` завершился `READY`; код соответствует коммиту `6dd6c20`. Runtime — Node.js 22, тариф проекта Hobby. Установлен `NODE_OPTIONS=--no-addons --experimental-require-module`: первый флаг блокирует нативные addons, второй разрешает используемый SDK переход CommonJS → ESM. Без второго флага на Vercel воспроизведён `ERR_REQUIRE_ESM` в `rpc-websockets → uuid`. Сборка Vite отдельно очищает `NODE_OPTIONS` для своего native parser.
+
+Публичный smoke без авторизации Vercel завершился с кодом 0:
+
+```text
+GET /                              200; CSP present
+GET /api/health                    200; read-only
+GET /api/demo                      200; source=demo
+POST /api/compare (samples)         200; 2 state changes
+GET /api/inspect (devnet)           200; live, migrated, DAMM verified
+POST /api/compare (devnet baseline) 200; 4 state changes
+GET /api/inspect (mainnet-beta)     200; live, migrated
+```
+
+Результаты — `artifacts/public-smoke.json` и `artifacts/public-devnet-report.json`. Исправленный `.vercelignore` проверен фактическим `buildFileTree` Vercel CLI: в загрузку входят 19 файлов приложения и сборки, environment-файлы и локальные артефакты исключены. Первые неудачные облачные сборки и ошибки запуска не считаются успешной проверкой; выше указан только прошедший деплой.
+
+Публичный интерфейс проверен в браузере на devnet-пуле: LIVE READ, Migrated, проверка блокировок позиций UNKNOWN. Ошибок API в интерфейсе и ошибок консоли не было; снимок — `artifacts/launchcheck-public.png`. Запросы к `/.env.devnet.local`, `/.env.local`, `/artifacts/release-manifest.json` и `/scripts/devnet-wallet.ts` вернули 404; API-запрос с посторонним Origin — 403.
+
+Обновления Vercel выполняются вручную через CLI. Постоянная GitHub-интеграция и автоматический деплой при push не включены. Наличие публичного демо не меняет ограничений LP-проверок и незакрытого dependency audit.
 
 ### Подготовка публичного демо
 
@@ -14,7 +40,7 @@
 
 Проверка внутри контейнера подтвердила UID 1000 и отсутствие `.env`, `.env.devnet.local`, `.keys`, `artifacts`, wallet/rehearsal scripts. `node --no-addons --import tsx scripts/check-runtime.ts --check-only` завершился с кодом 0. Повторный `npm audit` завершился с кодом **1**: **5 high**, остальные уровни 0; результат — `artifacts/audit-public-demo.json`. Native mitigation не закрывает advisory.
 
-Подготовлены English README, submission draft, demo script и английские ссылки на devnet-транзакции. Два публичных исторических отчёта помещены в `examples/`; приватный devnet environment-файл туда не входит. Публичный деплой, Git-коммит/push и отправка заявки не выполнялись.
+Подготовлены English README, submission draft, demo script и английские ссылки на devnet-транзакции. Два публичных исторических отчёта помещены в `examples/`; приватный devnet environment-файл туда не входит. На этом этапе публичный деплой, Git-коммит/push и отправка заявки ещё не выполнялись; последующая публикация описана выше.
 
 За общим reverse proxy прикладной лимит 60 API-запросов в минуту разделяется всеми посетителями с одного socket IP; приложение намеренно не доверяет произвольному `X-Forwarded-For`. Ограничение описано в deployment guide; это предел текущего небольшого демо.
 
@@ -104,4 +130,4 @@ Faucet для нового постоянного devnet-кошелька вер
 
 Фактические владельцы NFT-позиций, LP-locks и vesting-аккаунты не проверяются. В отчёте отображается настроенное распределение, а соответствующая проверка остаётся unknown. Наличие DAMM-аккаунта не доказывает, что в пуле сейчас разрешена торговля. Альтернативные DAMM migration configs и другие семейства токенов не входят в подтверждённый объём.
 
-Артефакты, зависимости и сборка исключены из Git. Коммитов и push в рамках этой работы не было.
+Артефакты, зависимости и сборка исключены из Git. Коммиты и push выполнены после разрешения владельца; сведения о публичном деплое приведены в начале документа.
