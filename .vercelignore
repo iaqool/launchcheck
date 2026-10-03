@@ -1,9 +1,10 @@
-/*
-!api/
-!src/
-!scripts/
-/scripts/*
-!/scripts/check-runtime.ts
+*
+!api
+!api/**
+!src
+!src/**
+!scripts
+!scripts/check-runtime.ts
 !index.html
 !package.json
 !package-lock.json
