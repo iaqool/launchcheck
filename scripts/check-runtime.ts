@@ -20,5 +20,5 @@ export function assertReadOnlyRuntime(): void {
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
   assertReadOnlyRuntime();
   if (process.argv.includes('--check-only')) console.log('Read-only runtime check passed.');
-  else await import('../src/server/index');
+  else await import('../src/server/index.js');
 }

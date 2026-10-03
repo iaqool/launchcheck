@@ -1,4 +1,4 @@
-import type { InspectionReport } from '../shared/report';
+import type { InspectionReport } from '../shared/report.js';
 
 export function demoReport(scenario: string): InspectionReport {
   if (!['trading', 'pending', 'migrated'].includes(scenario)) throw new Error('Unknown sample scenario.');

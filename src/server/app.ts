@@ -1,10 +1,10 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { resolve, sep, extname } from 'node:path';
-import { inspectPool } from '../core/inspect';
-import { demoReport } from './demo';
-import { compareReports } from '../shared/comparison';
-import type { Cluster } from '../shared/report';
+import { inspectPool } from '../core/inspect.js';
+import { demoReport } from './demo.js';
+import { compareReports } from '../shared/comparison.js';
+import type { Cluster } from '../shared/report.js';
 
 function json(res: ServerResponse, status: number, body: unknown) {
   res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });

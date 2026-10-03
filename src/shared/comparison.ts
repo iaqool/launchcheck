@@ -1,4 +1,4 @@
-import type { ComparisonResult, InspectionReport, ReportChange } from './report';
+import type { ComparisonResult, InspectionReport, ReportChange } from './report.js';
 
 const object = (value: unknown): value is Record<string, unknown> => value !== null && typeof value === 'object' && !Array.isArray(value);
 const text = (value: unknown, max = 2000): value is string => typeof value === 'string' && value.length <= max;

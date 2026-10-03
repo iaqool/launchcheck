@@ -1,7 +1,7 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import { assertReadOnlyRuntime } from '../scripts/check-runtime';
+import { assertReadOnlyRuntime } from '../scripts/check-runtime.js';
 
-type Handler = ReturnType<typeof import('../src/server/app').createHandler>;
+type Handler = ReturnType<typeof import('../src/server/app.js').createHandler>;
 let handlerPromise: Promise<Handler> | undefined;
 
 export default async function handler(req: IncomingMessage, res: ServerResponse): Promise<void> {
@@ -16,6 +16,6 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
     req.url = `/api/${route}${url.search}`;
   }
 
-  handlerPromise ??= import('../src/server/app').then(({ createHandler }) => createHandler());
+  handlerPromise ??= import('../src/server/app.js').then(({ createHandler }) => createHandler());
   await (await handlerPromise)(req, res);
 }

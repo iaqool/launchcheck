@@ -1,6 +1,6 @@
 import { createServer } from 'node:http';
 import { existsSync } from 'node:fs';
-import { createHandler } from './app';
+import { createHandler } from './app.js';
 
 if (existsSync('.env')) process.loadEnvFile('.env');
 const port = Number(process.env.PORT ?? 4174);
